@@ -1,0 +1,7 @@
+fastapi[all]
+tqdm
+pdfminer
+textract
+faiss-cpu
+sentence-transformers
+pymongo

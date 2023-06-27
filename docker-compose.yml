@@ -1,0 +1,62 @@
+version: '3.8'
+services:
+  db:
+    container_name: db_mongo
+    image: mongo:latest
+    restart: always
+    ports:
+      - 27017:27017
+    env_file:
+      - ./envs/mongo.env
+    volumes:
+      - db_data:/data/db
+    networks:
+      - db_network
+
+  backend:
+    container_name: api
+    build:
+      context: .
+      dockerfile: dockerfiles/backend.dockerfile
+    command:
+      [
+        "uvicorn",
+        "src.main:app",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8000",
+        "--reload",
+      ]
+    ports:
+      - 8000:8000
+    volumes:
+      - ./backend/src:/code/src
+      - ./backend/data:/code/data
+    networks:
+      - db_network
+    depends_on:
+      - db
+
+  frontend:
+    container_name: client
+    build:
+      context: .
+      dockerfile: dockerfiles/frontend.dockerfile
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - ./frontend/src:/code/src
+    command: ["npm", "run", "dev", "--", "--host"]
+    ports:
+      - 5173:5173
+    depends_on:
+      - backend
+
+
+volumes:
+  db_data:
+
+networks:
+  db_network:
+    driver: bridge
