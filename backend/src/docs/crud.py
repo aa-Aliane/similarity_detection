@@ -10,6 +10,7 @@ import json
 temp = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 PARENT_DIR = os.path.dirname(os.path.dirname(__file__))
 DATA_DIR = os.path.join(temp, "data")
+FILES_DIR = os.path.join(DATA_DIR, "files")
 sys.path.append(PARENT_DIR)
 
 
@@ -25,14 +26,16 @@ def create(doc: schemas.Doc, cln: Collection):
 
 
 def from_json(cln: Collection):
-
     cln.delete_many({})
 
-    with open(os.path.join(DATA_DIR, "pnst_sim.json"), "r", encoding="utf8") as f:
+    with open(
+        os.path.join(DATA_DIR, "arxiv_articles_db.json"), "r", encoding="utf8"
+    ) as f:
         data = json.load(f)
 
-    
-    cln.insert_many(data)
+    cln.insert_many(
+        [{**d, "url": os.path.join(FILES_DIR, f"{d['article_id']}.txt")} for d in data]
+    )
 
     return "inserted"
 
@@ -47,5 +50,3 @@ def read(cln: Collection, page: int = 1, limit: int = 10):
         response.append(d)
 
     return response
-
-

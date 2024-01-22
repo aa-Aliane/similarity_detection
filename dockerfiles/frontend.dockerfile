@@ -8,7 +8,7 @@ RUN npm i
 RUN npm i sass
 RUN npm i axios react-query react-router-dom 
 
-COPY frontend .
+COPY frontend /code/
 
 CMD [ "npm", "run", "dev", "--", "--host"]
 

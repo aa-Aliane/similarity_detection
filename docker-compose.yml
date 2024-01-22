@@ -14,7 +14,7 @@ services:
       - db_network
 
   backend:
-    container_name: api
+    container_name: api_mongo
     build:
       context: .
       dockerfile: dockerfiles/backend.dockerfile
@@ -39,7 +39,7 @@ services:
       - db
 
   frontend:
-    container_name: client
+    container_name: client_mongo
     build:
       context: .
       dockerfile: dockerfiles/frontend.dockerfile

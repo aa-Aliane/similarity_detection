@@ -23,9 +23,16 @@ router = APIRouter(
 from database import get_db
 
 
-# Endpoint to create a new user
+# Endpoint to get most similar docs
 @router.get("/most_similar")
 async def most_similar(text, db: Database = Depends(get_db)):
     cln = db["docs"]
     response = crud.most_similar(text, cln)
-    return {"message": response}
+    return {"results": response}
+
+# Endpoint to get details
+@router.get("/details")
+async def details(article_id, target, db: Database = Depends(get_db)):
+    cln = db["docs"]
+    response = crud.details(article_id, target, cln)
+    return {"results": response}
