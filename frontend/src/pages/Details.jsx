@@ -40,7 +40,7 @@ const Details = () => {
                 <p>{paragraph.text}</p>
                 <div className="details__item__info">
                   <div>
-                    taux de similarity :
+                    rate :
                     <span
                       className="details__rate"
                       data-rate={rateIndicator(paragraph.rate)}

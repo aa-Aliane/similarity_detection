@@ -3,7 +3,8 @@ from . import core
 
 
 def most_similar(text, cln: Collection):
-    search_result, rates = core.search(text, 10)
+    search_result, rates = core.search(text, 50)
+
     db_query = {"index": {"$in": search_result}}
     docs = cln.find(db_query)
 
@@ -19,7 +20,8 @@ def details(article_id, target, cln: Collection):
     db_query = {"article_id": article_id}
     source_path = cln.find_one(db_query)["url"]
     with open(source_path, "r", encoding="utf8") as f:
-        source = f.read()
+        source = f.read().split("\n\n*****\n\n")
+    print("sourceeeeeeeeeeeeeeeeeeeee", len(source))
     scores = core.compare(source, target)
 
     return scores

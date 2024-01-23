@@ -13,7 +13,8 @@
     box-shadow: rgba(0, 0, 0, 0.45) 0px 20px 10px -20px;
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: center;
+    gap: 2rem;
     padding: 0 10rem;
   }
 }
@@ -30,11 +31,31 @@
   width: 100%;
   background-color: var(--clr-primary-700);
 
+  &[data-dir="true"] {
+    direction: rtl;
+  }
+
   &__title {
     color: var(--clr-neutral-100);
+    transform: translateX(-2rem);
   }
 
   &__items {
+    display: flex;
+    gap: 1rem;
+  }
+}
+
+.indexing-type,
+.languages {
+  padding: 0 1rem;
+  border: 0.2rem solid var(--clr-primary-700);
+  & legend {
+    margin: auto;
+    padding: 0 1rem;
+  }
+
+  &__choices {
     display: flex;
     gap: 1rem;
   }

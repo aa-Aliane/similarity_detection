@@ -12,16 +12,16 @@ temp = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 DATA_DIR = os.path.join(temp, "data")
 
 model = SentenceTransformer(
-    "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"
+    "sentence-transformers/paraphrase-mpnet-base-v2"
 )
 
-index = faiss.read_index(os.path.join(DATA_DIR, "arxiv_old.index"))
+index = faiss.read_index(os.path.join(DATA_DIR, "arxiv:latest.index"))
 
 
 def search(query, top_k):
     t = time.time()
     query_vector = model.encode([query])
-    print(query_vector.shape)
+    print("queryyyyyyyyyyyy", query)
     rates, top_k = index.search(query_vector, top_k)
     rates = rates[0]
 
@@ -37,7 +37,6 @@ def search(query, top_k):
 
 
 def compare(source, target):
-    source = split_source(source)
 
     source_vectors = model.encode(source)
     target_vectors = model.encode(target)

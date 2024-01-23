@@ -1,6 +1,7 @@
 *.json
 !package.json
 *.csv
+*.zip
 *.index
 __*__*
 __*__

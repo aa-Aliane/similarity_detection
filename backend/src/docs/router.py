@@ -37,9 +37,21 @@ async def from_json(db: Database = Depends(get_db)):
     return {"message": reponse}
 
 
+@router.post("/update_json")
+async def update_json(db: Database = Depends(get_db)):
+    cln = db["docs"]
+    reponse = crud.update_json(cln=cln)
+
+    return {"message": reponse}
+
+
 @router.get("/read")
-async def read_articles(page: int = Query(1, ge=1), limit: int = Query(10, ge=1, le=100), db: Database = Depends(get_db)):
+async def read_articles(
+    page: int = Query(1, ge=1),
+    limit: int = Query(10, ge=1, le=100),
+    db: Database = Depends(get_db),
+):
     cln = db["docs"]
     response = crud.read(cln=cln, page=page, limit=limit)
-    
+
     return {"articles": response}

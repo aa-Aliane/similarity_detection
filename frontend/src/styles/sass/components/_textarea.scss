@@ -1,4 +1,7 @@
 .textarea {
+  height: 25vh;
 
-    height: 25vh;
+  &[data-dir="true"] {
+    direction: rtl;
+  }
 }

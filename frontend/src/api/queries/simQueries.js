@@ -40,7 +40,7 @@ export const useDetailsMutation = () => {
     {
       onSuccess: (data) => {
         queryClient.setQueryData("details", data);
-        console.log(data);
+        navigate("/details");
       },
     }
   );

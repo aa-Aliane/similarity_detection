@@ -63,6 +63,7 @@ const Interface = () => {
         <textarea
           className="interface__text textarea"
           placeholder={text.suspicious}
+          data-dir={current_lang === "ar"}
           onChange={(e) => setSuspicious(e.target.value)}
         ></textarea>
       )}
@@ -89,8 +90,14 @@ const Interface = () => {
           className="btn btn--check interface__check"
           type="submit"
         >
-          <p>{text.detect}</p>
-          <span class="material-symbols-outlined">plagiarism</span>
+          {!isLoading ? (
+            <>
+              <p>{text.detect}</p>
+              <span class="material-symbols-outlined">plagiarism</span>
+            </>
+          ) : (
+            <h4>loading...</h4>
+          )}
         </button>
       </div>
     </form>

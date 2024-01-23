@@ -18,5 +18,6 @@ COPY backend /code/
 
 ENV UVICORN_PORT 80
 
+RUN pip install elasticsearch==7.6.0
 
 EXPOSE $UVICORN_PORT

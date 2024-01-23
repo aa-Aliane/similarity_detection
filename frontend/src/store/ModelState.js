@@ -6,5 +6,5 @@ export const useModel = create((set) => ({
   set_suspicious: (text) => set(() => ({ suspicious: text })),
   results: [],
   set_results: (results) => set(() => ({ results: results })),
-  switchMultiLang: () => set((state) => ({ multiLang: !state.multiLang })),
+  switchMultiLang: (value) => set(() => ({ multiLang: value })),
 }));

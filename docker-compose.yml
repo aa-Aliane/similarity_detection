@@ -1,5 +1,108 @@
-version: '3.8'
+version: "3.8"
 services:
+  # Elasticsearch Node 1
+  es01:
+    container_name: es01
+    image: "docker.elastic.co/elasticsearch/elasticsearch:7.10.2"
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      node.name: es01
+      discovery.seed_hosts: es01,es02,es03
+      cluster.initial_master_nodes: es01,es02,es03
+      cluster.name: mycluster
+      bootstrap.memory_lock: "true"
+      ES_JAVA_OPTS: -Xms256m -Xmx256m
+    volumes:
+      - "es-data-es01:/usr/share/elasticsearch/data"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    healthcheck:
+      test: ["CMD-SHELL", "curl http://localhost:9200"]
+      interval: 10s
+      timeout: 10s
+      retries: 120
+    networks:
+      - es_network
+
+  # Elasticsearch Node 2
+  es02:
+    container_name: es02
+    image: "docker.elastic.co/elasticsearch/elasticsearch:7.10.2"
+    ports:
+      - "9201:9200"
+      - "9301:9300"
+    environment:
+      node.name: es02
+      discovery.seed_hosts: es01,es02,es03
+      cluster.initial_master_nodes: es01,es02,es03
+      cluster.name: mycluster
+      bootstrap.memory_lock: "true"
+      ES_JAVA_OPTS: -Xms256m -Xmx256m
+    volumes:
+      - "es-data-es02:/usr/share/elasticsearch/data"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    healthcheck:
+      test: ["CMD-SHELL", "curl http://localhost:9200"]
+      interval: 10s
+      timeout: 10s
+      retries: 120
+    networks:
+      - es_network
+
+  # Elasticsearch Node 3
+  es03:
+    container_name: es03
+    image: "docker.elastic.co/elasticsearch/elasticsearch:7.10.2"
+    ports:
+      - "9202:9200"
+      - "9302:9300"
+    environment:
+      node.name: es03
+      discovery.seed_hosts: es01,es02,es03
+      cluster.initial_master_nodes: es01,es02,es03
+      cluster.name: mycluster
+      bootstrap.memory_lock: "true"
+      ES_JAVA_OPTS: -Xms256m -Xmx256m
+    volumes:
+      - "es-data-es03:/usr/share/elasticsearch/data"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    healthcheck:
+      test: ["CMD-SHELL", "curl http://localhost:9200"]
+      interval: 10s
+      timeout: 10s
+      retries: 120
+    networks:
+      - es_network
+
+  # Kibana
+  kibana:
+    container_name: kibana
+    image: docker.elastic.co/kibana/kibana:7.10.2
+    depends_on:
+      es01:
+        condition: service_healthy
+      es02:
+        condition: service_healthy
+      es03:
+        condition: service_healthy
+    ports:
+      - "5601:5601"
+    environment:
+      - 'ELASTICSEARCH_HOSTS=["http://es01:9200","http://es02:9200","http://es03:9200"]'
+    networks:
+      - es_network
+
+  # Mongodb
   db:
     container_name: db_mongo
     image: mongo:latest
@@ -13,31 +116,43 @@ services:
     networks:
       - db_network
 
+  # Fastapi backend
   backend:
     container_name: api_mongo
     build:
       context: .
       dockerfile: dockerfiles/backend.dockerfile
-    command:
-      [
-        "uvicorn",
-        "src.main:app",
-        "--host",
-        "0.0.0.0",
-        "--port",
-        "8000",
-        "--reload",
-      ]
+    # command:
+    #   [
+    #     "uvicorn",
+    #     "src.main:app",
+    #     "--host",
+    #     "0.0.0.0",
+    #     "--port",
+    #     "8000",
+    #     "--reload",
+    #   ]
+    command: >
+      bash -c "
+        # python scripts/elastic/create_and_populate_index.py &&
+        uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload
+      "
     ports:
       - 8000:8000
     volumes:
       - ./backend/src:/code/src
       - ./backend/data:/code/data
+      - ./backend/scripts:/code/scripts
     networks:
       - db_network
+      - es_network
     depends_on:
       - db
+      - es01
+      - es02
+      - es03
 
+  # Reactjs frontend
   frontend:
     container_name: client_mongo
     build:
@@ -53,10 +168,18 @@ services:
     depends_on:
       - backend
 
-
 volumes:
+  # Mongodb data volume
   db_data:
 
+  # Elasticsearch data volumes for each node
+  es-data-es01:
+  es-data-es02:
+  es-data-es03:
+
 networks:
+  # Bridge network for communication between backend, frontend, and database
   db_network:
+    driver: bridge
+  es_network:
     driver: bridge

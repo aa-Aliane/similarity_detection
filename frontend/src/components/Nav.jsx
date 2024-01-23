@@ -10,6 +10,7 @@ const Nav = () => {
   const languages = useLanguage((state) => state.languages);
   const text = useLanguage((state) => state.text.nav);
   const change_language = useLanguage((state) => state.change_language);
+  const current_lang = useLanguage((state) => state.current_language);
   const current_layout = useLayout((state) => state.current_layout);
   const set_current_layout = useLayout((state) => state.set_current_layout);
   const set_suspicious = useModel((state) => state.set_suspicious);
@@ -31,7 +32,7 @@ const Nav = () => {
   };
   return (
     <div className="header">
-      <nav className="nav">
+      <nav className="nav" data-dir={current_lang === "ar"}>
         <ul className="nav__items">
           <li>
             <a
@@ -64,7 +65,9 @@ const Nav = () => {
             </a>
           </li>
         </ul>
-        <h3 className="nav__title">{text.title}</h3>
+        <h3 className={`nav__title ${lang === "ar" ? "fw-semi-bold" : ""}`}>
+          {text.title}
+        </h3>
         {/* language settings */}
         <div>
           <select name="" id="">
@@ -92,7 +95,7 @@ const Nav = () => {
       </nav>
       {current_layout === "interface" ? (
         <div className="header__menu">
-          <label class="form-control">
+          {/* <label class="form-control">
             <input
               type="checkbox"
               name="checkbox"
@@ -100,7 +103,60 @@ const Nav = () => {
               checked={multiLang}
             />
             multilang indexation
-          </label>
+          </label> */}
+          <fieldset className="indexing-type">
+            <legend>{text.indexing}</legend>
+            <label>
+              <div className="indexing-type__choices">
+                <label class="form-control">
+                  <input
+                    type="radio"
+                    name="indexing_type"
+                    onClick={() => switchMultiLang(true)}
+                    checked={multiLang}
+                  />
+                  {text.multi}
+                </label>
+                <label class="form-control">
+                  <input
+                    type="radio"
+                    name="indexing_type"
+                    onClick={() => switchMultiLang(false)}
+                    checked={!multiLang}
+                  />
+                  {text.mono}
+                </label>
+              </div>
+            </label>
+          </fieldset>
+          {/* <fieldset className="languages">
+            <legend>languages</legend>
+            <label>
+              <div className="languages__choices">
+                <label class="form-control">
+                  <input
+                    type="checkbox"
+                    name="ar"
+                  />
+                  arabic
+                </label>
+                <label class="form-control">
+                  <input
+                    type="checkbox"
+                    name="en"
+                  />
+                  english
+                </label>
+                <label class="form-control">
+                  <input
+                    type="checkbox"
+                    name="fr"
+                  />
+                  french
+                </label>
+              </div>
+            </label>
+          </fieldset> */}
         </div>
       ) : null}
     </div>

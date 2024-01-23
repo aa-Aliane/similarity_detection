@@ -29,7 +29,7 @@ def from_json(cln: Collection):
     cln.delete_many({})
 
     with open(
-        os.path.join(DATA_DIR, "arxiv_articles_db.json"), "r", encoding="utf8"
+        os.path.join(DATA_DIR, "meta.list.json"), "r", encoding="utf8"
     ) as f:
         data = json.load(f)
 
@@ -38,6 +38,21 @@ def from_json(cln: Collection):
     )
 
     return "inserted"
+
+
+def update_json(cln: Collection):
+
+
+    with open(
+        os.path.join(DATA_DIR, "meta.list.json"), "r", encoding="utf8"
+    ) as f:
+        data = json.load(f)
+
+    cln.insert_many(
+        [{**d, "url": os.path.join(FILES_DIR, f"{d['article_id']}.txt")} for d in data]
+    )
+
+    return "updated"
 
 
 def read(cln: Collection, page: int = 1, limit: int = 10):
