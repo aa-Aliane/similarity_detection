@@ -13,7 +13,7 @@ const Nav = () => {
   const current_lang = useLanguage((state) => state.current_language);
   const current_layout = useLayout((state) => state.current_layout);
   const set_current_layout = useLayout((state) => state.set_current_layout);
-  const set_suspicious = useModel((state) => state.set_suspicious);
+  const setSuspicious = useModel((state) => state.setSuspicious);
   const { multiLang, switchMultiLang } = useModel();
 
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ const Nav = () => {
   };
   // handles layout change
   const HandleLayoutChange = (l) => {
-    set_suspicious("");
+    setSuspicious("");
     console.log("first", l);
 
     set_current_layout(l);

@@ -9,7 +9,7 @@ const Result = ({ result }) => {
   const current_lang = useLanguage((state) => state.current_language);
   const text = useLanguage((state) => state.text.result);
   const { suspicious } = useModel();
-  const navigate = useNavigate();
+ 
 
   const HandleDetails = (e, article_id) => {
     e.preventDefault();

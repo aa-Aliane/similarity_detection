@@ -12,7 +12,7 @@ const Interface = () => {
   const current_lang = useLanguage((state) => state.current_language);
   const [fromFile, setFromFile] = useState(false);
 
-  const [suspicious, setSuspicious] = useState("");
+  const { suspicious, setSuspicious } = useModel();
 
   const {
     mutate: mostSimilar,
@@ -60,12 +60,14 @@ const Interface = () => {
         <span class="material-symbols-outlined">backspace</span>
       </button>
       {!fromFile && (
-        <textarea
-          className="interface__text textarea"
-          placeholder={text.suspicious}
-          data-dir={current_lang === "ar"}
-          onChange={(e) => setSuspicious(e.target.value)}
-        ></textarea>
+        <>
+          <textarea
+            className="interface__text textarea"
+            placeholder={text.suspicious}
+            data-dir={current_lang === "ar"}
+            onChange={(e) => setSuspicious(e.target.value)}
+          ></textarea>
+        </>
       )}
       {/* <button className="btn btn--check interface__upload">
         

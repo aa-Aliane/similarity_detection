@@ -34,7 +34,7 @@ def from_json(cln: Collection):
         data = json.load(f)
 
     cln.insert_many(
-        [{**d, "url": os.path.join(FILES_DIR, f"{d['article_id']}.txt")} for d in data]
+        [{**d, "path": os.path.join(FILES_DIR, f"{d['article_id']}.txt")} for d in data]
     )
 
     return "inserted"

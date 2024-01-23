@@ -1,5 +1,5 @@
 # 1 build containers
-
+## sudo sysctl -w vm.max_map_count=262144
 ## docker compose up -d
 
 # 2 create and populate the elastic search index

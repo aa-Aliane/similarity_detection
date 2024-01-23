@@ -36,7 +36,7 @@ export const useDetailsMutation = () => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation(
-    (article_id, target) => getDetails(article_id, target),
+    ({ article_id, target }) => getDetails(article_id, target),
     {
       onSuccess: (data) => {
         queryClient.setQueryData("details", data);
@@ -45,7 +45,8 @@ export const useDetailsMutation = () => {
     }
   );
 
-  const mutate = (text) => mutation.mutate(text);
+  const mutate = (article_id, target) =>
+    mutation.mutate({ article_id, target });
 
   return {
     mutate,

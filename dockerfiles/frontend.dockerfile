@@ -12,4 +12,4 @@ COPY frontend /code/
 
 CMD [ "npm", "run", "dev", "--", "--host"]
 
-EXPOSE 5173
+EXPOSE 5173k
