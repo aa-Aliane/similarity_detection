@@ -569,6 +569,11 @@
   justify-content: space-between;
 }
 
+.centered {
+  width: fit-content;
+  margin: 5rem auto;
+}
+
 /* Box sizing rules */
 *,
 *::before,
@@ -1098,7 +1103,7 @@ a:hover {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  margin-top: 3rem;
+  margin: 3rem 0;
 }
 
 .results {

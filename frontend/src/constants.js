@@ -66,6 +66,9 @@ export const TextPerLang = {
     result: {
       deep: "show details",
     },
+    results: {
+      no: "there are no document that correspond the query",
+    },
   },
   fr: {
     nav: {
@@ -118,6 +121,9 @@ export const TextPerLang = {
     result: {
       deep: "afficher les détails",
     },
+    results: {
+      no: "Il n'y a aucun document qui correspond à la requête.",
+    },
   },
   ar: {
     nav: {
@@ -169,6 +175,9 @@ export const TextPerLang = {
     },
     result: {
       deep: "إظهار التفاصيل",
+    },
+    results: {
+      no: "لا توجد وثائق تتوافق مع الاستعلام.",
     },
   },
 };

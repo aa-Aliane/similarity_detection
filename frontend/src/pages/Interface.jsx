@@ -4,7 +4,10 @@ import { api, api_form } from "../api/api";
 import { useLayout } from "../store/LayoutState";
 import { useModel } from "../store/ModelState";
 import { useToggleMenu } from "../store/General";
-import { useMostSimilarMutation } from "../api/queries/simQueries";
+import {
+  useMostSimilarMutation,
+  useMostSimilarMonoMutation,
+} from "../api/queries/simQueries";
 
 const Interface = () => {
   const text = useLanguage((state) => state.text.interface);
@@ -12,14 +15,21 @@ const Interface = () => {
   const current_lang = useLanguage((state) => state.current_language);
   const [fromFile, setFromFile] = useState(false);
 
-  const { suspicious, setSuspicious } = useModel();
+  const { suspicious, setSuspicious, multiLang } = useModel();
 
   const {
     mutate: mostSimilar,
     data: results,
     isLoading,
-    isError,
   } = useMostSimilarMutation();
+
+  const [loading, setLoading] = useState(isLoading);
+
+  const {
+    mutate: mostSimilarMono,
+    data: resultsMono,
+    isLoadingMono,
+  } = useMostSimilarMonoMutation();
 
   const menu_toggled = useToggleMenu((state) => state.toggle);
 
@@ -37,7 +47,8 @@ const Interface = () => {
   // Handle plagiarism detection
   const HandlePlagiarismDetection = (text) => {
     if (typeof text === "string") {
-      mostSimilar(text);
+      if (multiLang) mostSimilar(text);
+      else mostSimilarMono(text);
     } else {
       mostSimilar(text);
     }
@@ -66,6 +77,7 @@ const Interface = () => {
             placeholder={text.suspicious}
             data-dir={current_lang === "ar"}
             onChange={(e) => setSuspicious(e.target.value)}
+            value={suspicious}
           ></textarea>
         </>
       )}
@@ -86,13 +98,14 @@ const Interface = () => {
           id="file-input"
           type="file"
           onChange={handleFileUpload}
+          disabled
         />
         <button
           data-enabled={suspicious !== ""}
           className="btn btn--check interface__check"
           type="submit"
         >
-          {!isLoading ? (
+          {(multiLang && !isLoading) || !multiLang ? (
             <>
               <p>{text.detect}</p>
               <span class="material-symbols-outlined">plagiarism</span>

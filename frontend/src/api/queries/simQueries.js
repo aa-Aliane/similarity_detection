@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "react-query";
-import { getMostSimilar, getDetails } from "../data/sim";
+import { getMostSimilar, getMostSimilarMono, getDetails } from "../data/sim";
 import { useNavigate } from "react-router-dom";
 
 /**
@@ -15,6 +15,31 @@ export const useMostSimilarMutation = () => {
   const mutation = useMutation((text) => getMostSimilar(text), {
     onSuccess: (data) => {
       queryClient.setQueryData("docs", data);
+      navigate("/results");
+    },
+  });
+
+  const mutate = (text) => mutation.mutate(text);
+
+  return {
+    mutate,
+    data: mutation.data,
+    isLoading: mutation.isLoading,
+    isError: mutation.isError,
+    error: mutation.error,
+    reset: mutation.reset,
+  };
+};
+
+export const useMostSimilarMonoMutation = () => {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation((text) => getMostSimilarMono(text), {
+    onSuccess: (data) => {
+      queryClient.setQueryData("docs", data);
+      console.log("first", data);
+      
       navigate("/results");
     },
   });

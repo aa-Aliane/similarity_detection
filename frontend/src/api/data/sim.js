@@ -1,9 +1,13 @@
 import { api } from "../api";
-import { useNavigate } from "react-router-dom";
+
 
 export const getMostSimilar = async (text) => {
   let response = await api.get(`most_similar/?text=${text}`);
-  console.log(response.data.results);
+  return response.data.results;
+};
+
+export const getMostSimilarMono = async (text) => {
+  let response = await api.get(`most_similar_mono/?text=${text}`);
   return response.data.results;
 };
 

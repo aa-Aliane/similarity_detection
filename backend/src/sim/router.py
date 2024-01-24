@@ -30,6 +30,13 @@ async def most_similar(text, db: Database = Depends(get_db)):
     response = crud.most_similar(text, cln)
     return {"results": response}
 
+# Endpoint to get most similar docs
+@router.get("/most_similar_mono")
+async def most_similar_mono(text, db: Database = Depends(get_db)):
+    cln = db["docs"]
+    response = crud.most_similar_mono(text, cln)
+    return {"results": response}
+
 # Endpoint to get details
 @router.get("/details")
 async def details(article_id, target, db: Database = Depends(get_db)):

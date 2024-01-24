@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .routes import api_router
 
-origins = ["http://127.0.0.1", "http://127.0.0.1:5173"]
+origins = ["*"]
 
 app = FastAPI()
 

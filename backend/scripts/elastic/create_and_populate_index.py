@@ -34,7 +34,8 @@ es.indices.create(index=index_name, body={"mappings": mapping}, ignore=400)
 def index_document(file_path):
     """Index a document into Elasticsearch."""
     with open(file_path, "r", encoding="utf-8") as file:
-        file_content = file.read()
+        content_list = file.read().split("\n\n*****\n\n")
+        file_content = "\n".join(content_list)
 
     document = {"filename": os.path.basename(file_path)[:-4], "content": file_content}
     es.index(index=index_name, body=document)
