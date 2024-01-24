@@ -38,6 +38,10 @@
   &__title {
     color: var(--clr-neutral-100);
     transform: translateX(-2rem);
+
+    &[data-dir="ar"]{
+      transform: translateX(2rem);
+    }
   }
 
   &__items {

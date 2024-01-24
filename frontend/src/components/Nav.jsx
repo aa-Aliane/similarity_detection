@@ -58,14 +58,14 @@ const Nav = () => {
             <a
               data-current={current_layout === "api"}
               className="a a--nav"
-              href="#"
-              onClick={() => HandleLayoutChange("api")}
+              href="http://10.0.211.63:8000/docs"
+              target="_blank"
             >
               {text.api}
             </a>
           </li>
         </ul>
-        <h3 className={`nav__title ${lang === "ar" ? "fw-semi-bold" : ""}`}>
+        <h3 className={`nav__title ${lang === "ar" ? "fw-semi-bold" : ""}`} data-dir={lang}>
           {text.title}
         </h3>
         {/* language settings */}

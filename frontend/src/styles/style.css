@@ -2,8 +2,8 @@
   --clr-primary-100: hsl(184, 58%, 95%);
   --clr-primary-200: hsl(184, 58%, 90%);
   --clr-primary-400: hsl(184, 58%, 60%);
-  --clr-primary-500: hsl(184, 58%, 50%);
-  --clr-primary-700: hsl(184, 58%, 20%);
+  --clr-primary-500: hsl(202, 85%, 50%);
+  --clr-primary-700: hsl(202, 85%, 28%);
   --clr-primary-900: hsl(184, 74%, 8%);
   --clr-neutral-100: hsl(0, 0%, 95%);
   --clr-neutral-200: hsl(0, 0%, 90%);
@@ -826,6 +826,9 @@ main {
 .nav__title {
   color: var(--clr-neutral-100);
   transform: translateX(-2rem);
+}
+.nav__title[data-dir=ar] {
+  transform: translateX(2rem);
 }
 .nav__items {
   display: flex;
